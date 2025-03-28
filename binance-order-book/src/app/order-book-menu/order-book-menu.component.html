@@ -1,0 +1,48 @@
+<div class="order-book-header">
+  <tui-multi-select
+    class="multi-select"
+    [editable]="false"
+    [valueContent]="stringify(selectedPairs)"
+    [(ngModel)]="selectedPairs"
+  >
+    Selectable pairs
+    <cdk-virtual-scroll-viewport
+      *tuiDataList
+      appendOnly
+      tuiScrollable
+      class="scroll"
+      [itemSize]="10"
+    >
+      <tui-loader [showLoader]="(isLoading$ | async)!" [inheritColor]="true" [overlay]="true">
+        <tui-data-list tuiMultiSelectGroup>
+          <button
+            *cdkVirtualFor="let tradingPair of (tradingPairs$ | async) | filterPairs: selectedPairs"
+            tuiOption
+            type="button"
+            [value]="tradingPair"
+          >
+            {{ tradingPair.symbol }}
+          </button>
+        </tui-data-list>
+      </tui-loader>
+    </cdk-virtual-scroll-viewport>
+  </tui-multi-select>
+
+  <button
+    size="l"
+    tuiButton
+    type="button"
+    [appearance]="'textfield'"
+    (click)="selectPairs()"
+  >
+    Add
+  </button>
+
+</div>
+
+<app-order-book-item
+  *ngFor="let selectedOrderBook of orderBookItems; trackBy: trackById"
+  [selectedPair]="selectedOrderBook"
+  (remove)="removeOrderBook($event)"
+>
+</app-order-book-item>

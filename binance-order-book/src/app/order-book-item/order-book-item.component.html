@@ -1,0 +1,49 @@
+<tui-loader
+  [overlay]="true"
+  [showLoader]="!!(isLoading$ | async)"
+>
+  <div class="header-container">
+    <h2>Order book: {{ selectedPair.symbol }}</h2>
+    <button
+      size="m"
+      tuiButton
+      type="button"
+      [appearance]="'textfield'"
+      (click)="removeOrderBook()"
+    >
+      Remove
+    </button>
+  </div>
+
+  <div class="tables-container">
+    <table>
+      <thead>
+      <tr>
+        <th>Bids price</th>
+        <th>Qty</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let bid of (orderBook$ | async)!.bids">
+        <td>{{ bid[0] | round }}</td>
+        <td>{{ bid[1] | round }}</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Asks price</th>
+        <th>Qty</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let ask of (orderBook$ | async)!.asks">
+        <td>{{ ask[0] | round }}</td>
+        <td>{{ ask[1] | round }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</tui-loader>
